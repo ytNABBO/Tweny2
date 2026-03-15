@@ -1,17 +1,32 @@
 #include "../engine/Game.h"
+#include "../engine/Texture.h"
 
 // -------------------------------------------------------
 // MyGame — il gioco specifico costruito sopra Tweny2
-// Eredita da Tweny2::Game e sovrascrive onUpdate e onRender
 // -------------------------------------------------------
 struct Player {
-    float x     = 400.0f;
-    float y     = 300.0f;
+    float x = 400.0f;
+    float y = 300.0f;
     float speed = 200.0f;
 };
 
 class MyGame : public Tweny2::Game {
     public:
+        // Chiamato una volta all'avvio — carica le risorse
+        bool init(const char* title, int width, int height) {
+            // Prima chiama init() della classe padre (Game)
+            if (!Tweny2::Game::init(title, width, height)) {
+                return false;
+            }
+
+            // Carica lo sprite del player dalla cartella assets
+            if (!m_playerTexture.load(m_renderer.get(), "assets/player.png")) {
+                return false;
+            }
+
+            return true;
+        }
+
         // Sovrascrive onUpdate — logica del gioco
         void onUpdate(float deltaTime) override {
             // Movimento con WASD — l'asse Y è invertito (y decresce andando verso l'alto)
@@ -32,19 +47,19 @@ class MyGame : public Tweny2::Game {
             }
 
             // Impedisce al player di uscire dalla finestra
-            m_player.x = SDL_clamp(m_player.x, 16.0f, 784.0f); // La finestra è 800px, il player è largo 32px, quindi lo limito tra 16 e 784 per tenerlo dentro
-            m_player.y = SDL_clamp(m_player.y, 16.0f, 584.0f); // La finestra è 600px, il player è alto 32px, quindi lo limito tra 16 e 584 per tenerlo dentro
+            m_player.x = SDL_clamp(m_player.x, 0.0f, 736.0f); // 800 - 64 (larghezza sprite)
+            m_player.y = SDL_clamp(m_player.y, 0.0f, 504.0f); // 600 - 96 (altezza sprite)
         }
 
         // Sovrascrive onRender — disegno del gioco
         void onRender() override {
-            // Disegna il player — quadrato 32x32 centrato su x,y
-            m_renderer.setDrawColor(220, 220, 255);
-            m_renderer.fillRect(m_player.x - 16.0f, m_player.y - 16.0f, 32.0f, 32.0f); // Il player è un quadrato 32x32, quindi lo disegno spostato di 16 pixel per centrarlo su x,y
+            // Disegna lo sprite del player nella posizione x,y
+            m_playerTexture.draw(m_renderer.get(), m_player.x, m_player.y);
         }
 
     private:
         Player m_player; // Stato del player
+        Tweny2::Texture m_playerTexture; // Sprite del player
 };
 
 // -------------------------------------------------------
