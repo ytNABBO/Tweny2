@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "Input.h"
+#include "Texture.h"
 
 // Evita conflitti di nomi con altre librerie
 namespace Tweny2 {

@@ -17,6 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON) # Se il compilatore non supporta C++17, CMak
 # - SDL2_LIBRARIES: percorso della libreria compilata (.dll / .lib cioé il codice della funzione)
 # REQUIRED significa se non la trova, si ferma con errore
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 
 # Crea l'eseguibile chiamato "Tweny2" compilando i file elencati
 # Quando si aggiungono altri file .cpp all'engine, bisogna collegarli qui, uno per riga
@@ -26,6 +27,7 @@ add_executable(Tweny2
     engine/Renderer.cpp
     engine/Input.cpp
     engine/Game.cpp
+    engine/Texture.cpp
 )
 
 # Dice al compilatore dove trovare i file header di SDL2
@@ -35,7 +37,10 @@ target_include_directories(Tweny2 PRIVATE ${SDL2_INCLUDE_DIRS})
 # Collega la libreria SDL2 all'eseguibile.
 # Il compilatore conosce già le funzioni SDL2 grazie agli header, ma senza questa riga non saprebbe dove trovare il codice che le esegue
 # PRIVATE significa che la dipendenza è solo di Tweny2, non viene propagata ad altri
-target_link_libraries(Tweny2 PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(Tweny2 PRIVATE
+    ${SDL2_LIBRARIES}
+    SDL2_image::SDL2_image
+)
 
 # Su Windows le librerie condivise sono file .dll che devono stare nella stessa cartella dell'eseguibile per poter essere trovate
 # Questo comando copia SDL2.dll accanto a Tweny2.exe dopo ogni build
