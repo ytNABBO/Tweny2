@@ -1,5 +1,4 @@
 #include "../engine/Game.h"
-#include "../engine/Texture.h"
 
 // -------------------------------------------------------
 // MyGame — il gioco specifico costruito sopra Tweny2
@@ -20,7 +19,7 @@ class MyGame : public Tweny2::Game {
             }
 
             // Carica lo sprite del player dalla cartella assets
-            if (!m_playerTexture.load(m_renderer.get(), "assets/player.png")) {
+            if (!m_assets.loadTexture(m_renderer.get(), "player", "assets/player.png")) {
                 return false;
             }
 
@@ -47,19 +46,18 @@ class MyGame : public Tweny2::Game {
             }
 
             // Impedisce al player di uscire dalla finestra
-            m_player.x = SDL_clamp(m_player.x, 0.0f, (float)(800 - m_playerTexture.getWidth())); // 800 è la larghezza della finestra, getWidth() è la larghezza del player
-            m_player.y = SDL_clamp(m_player.y, 0.0f, (float)(600 - m_playerTexture.getHeight())); // 600 è l'altezza della finestra, getHeight() è l'altezza del player
+            m_player.x = SDL_clamp(m_player.x, 0.0f, (float)(800 - m_assets.getTexture("player")->getWidth())); // 800 è la larghezza della finestra, getWidth() è la larghezza dello sprite del player
+            m_player.y = SDL_clamp(m_player.y, 0.0f, (float)(600 - m_assets.getTexture("player")->getHeight())); // 600 è l'altezza della finestra, getHeight() è l'altezza dello sprite del player
         }
-
+        
         // Sovrascrive onRender — disegno del gioco
         void onRender() override {
             // Disegna lo sprite del player nella posizione x,y
-            m_playerTexture.draw(m_renderer.get(), m_player.x, m_player.y);
+            m_assets.getTexture("player")->draw(m_renderer.get(), m_player.x, m_player.y);
         }
 
     private:
         Player m_player; // Stato del player
-        Tweny2::Texture m_playerTexture; // Sprite del player
 };
 
 // -------------------------------------------------------

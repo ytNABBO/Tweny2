@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Input.h"
 #include "Texture.h"
+#include "AssetManager.h"
 
 // Evita conflitti di nomi con altre librerie
 namespace Tweny2 {
@@ -29,6 +30,7 @@ namespace Tweny2 {
             Window m_window; // Finestra SDL
             Renderer m_renderer; // Renderer SDL
             Input m_input; // Input tastiera
+            AssetManager m_assets; // Gestisce il caricamento e la cache delle texture
 
         private:
             bool m_running = false; // Controlla se il game loop deve continuare

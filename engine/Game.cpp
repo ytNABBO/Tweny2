@@ -72,6 +72,7 @@ namespace Tweny2 {
 
     void Game::shutdown() {
         // Pulizia in ordine inverso rispetto alla creazione
+        m_assets.clear();
         m_renderer.destroy();
         m_window.destroy();
         SDL_Quit();
