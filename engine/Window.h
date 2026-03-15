@@ -3,28 +3,23 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-namespace Tweny2 { // Namespace dell'engine — evita conflitti di nomi con altre librerie
+// Evita conflitti di nomi con altre librerie
+namespace Tweny2 {
+    // Gestisce la finestra SDL — creazione, distruzione e accesso al puntatore interno
+    class Window {
+        public:
+            bool create(const std::string& title, int width, int height); // Crea la finestra con titolo, larghezza e altezza (ritorna false se la creazione fallisce)
 
-// Gestisce la finestra SDL — creazione, distruzione e accesso al puntatore interno
-class Window {
-public:
-    // Crea la finestra con titolo, larghezza e altezza
-    // Ritorna false se la creazione fallisce
-    bool create(const std::string& title, int width, int height);
+            void destroy(); // Distrugge la finestra e libera la memoria
 
-    // Distrugge la finestra e libera la memoria
-    void destroy();
+            SDL_Window* get() const; // Ritorna il puntatore alla finestra SDL (usato dal Renderer)
 
-    // Ritorna il puntatore alla finestra SDL (usato dal Renderer)
-    SDL_Window* get() const;
+            bool isValid() const; // Ritorna true se la finestra è stata creata correttamente
 
-    // Ritorna true se la finestra è stata creata correttamente
-    bool isValid() const;
+        private:
+            SDL_Window* m_window = nullptr; // Puntatore alla finestra SDL (nullptr = non creata)
+            int m_width  = 0;
+            int m_height = 0;
+    };
 
-private:
-    SDL_Window* m_window = nullptr; // Puntatore alla finestra SDL (nullptr = non creata)
-    int m_width  = 0;
-    int m_height = 0;
-};
-
-} // namespace Tweny2
+    }
