@@ -23,14 +23,10 @@ class Renderer {
         void fillRect(float x, float y, float w, float h); // Disegna un rettangolo pieno
         
         // Ritorna il puntatore al renderer SDL
-        SDL_Renderer* get() const {
-            return m_renderer;
-        }
+        SDL_Renderer* get() const { return m_renderer;}
         
         // Ritorna true se il renderer è stato creato correttamente
-        bool isValid() const {
-            return m_renderer != nullptr;
-        }
+        bool isValid() const { return m_renderer != nullptr; }
 
     private:
         SDL_Renderer* m_renderer = nullptr; // Puntatore al renderer SDL (nullptr = non creato)
