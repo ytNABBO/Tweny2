@@ -30,37 +30,44 @@ class MyGame : public Tweny2::Game {
 
         // Sovrascrive onUpdate — logica del gioco
         void onUpdate(float deltaTime) override {
-            // Movimento con WASD — l'asse Y è invertito (y decresce andando verso l'alto)
-            if (m_input.isKeyDown(SDL_SCANCODE_W)) {
-                m_player.y -= m_player.speed * deltaTime;
-            }
+            // Salva posizione precedente
+            float prevX = m_player.x;
+            float prevY = m_player.y;
 
-            if (m_input.isKeyDown(SDL_SCANCODE_S)) {
-                m_player.y += m_player.speed * deltaTime;
-            }
+            // Calcola il movimento
+            float moveX = 0.0f;
+            float moveY = 0.0f;
 
-            if (m_input.isKeyDown(SDL_SCANCODE_A)) {
-                m_player.x -= m_player.speed * deltaTime;
-            }
-
+            // Movimento orizzontale — l'ultimo tasto premuto ha priorità
             if (m_input.isKeyDown(SDL_SCANCODE_D)) {
-                m_player.x += m_player.speed * deltaTime;
+                moveX += m_player.speed * deltaTime;
+            } else if (m_input.isKeyDown(SDL_SCANCODE_A)) {
+                moveX -= m_player.speed * deltaTime;
             }
 
-            // Impedisce al player di uscire dalla finestra
-            m_player.x = SDL_clamp(m_player.x, 0.0f, (float)(800 - m_assets.getTexture("player")->getWidth())); // 800 è la larghezza della finestra, getWidth() è la larghezza dello sprite del player
-            m_player.y = SDL_clamp(m_player.y, 0.0f, (float)(600 - m_assets.getTexture("player")->getHeight())); // 600 è l'altezza della finestra, getHeight() è l'altezza dello sprite del player
-            
-            // Hitbox del player
-            Tweny2::AABB playerAABB = {
-                m_player.x, m_player.y,
-                (float)m_assets.getTexture("player")->getWidth(),
-                (float)m_assets.getTexture("player")->getHeight()
-            };
+            // Movimento verticale — l'ultimo tasto premuto ha priorità
+            if (m_input.isKeyDown(SDL_SCANCODE_S)) {
+                moveY += m_player.speed * deltaTime;
+            } else if (m_input.isKeyDown(SDL_SCANCODE_W)) {
+                moveY -= m_player.speed * deltaTime;
+            }
 
-            // Controlla la collisione con il muro
+            // Applica X e controlla
+            m_player.x += moveX;
+            m_player.x = SDL_clamp(m_player.x, 0.0f, (float)(800 - m_assets.getTexture("player")->getWidth()));
+            Tweny2::AABB playerAABB = { m_player.x, m_player.y, (float)m_assets.getTexture("player")->getWidth(), (float)m_assets.getTexture("player")->getHeight() };
+            
             if (Tweny2::checkCollision(playerAABB, m_wall)) {
-                std::cout << "Collisione con il muro!\n";
+                m_player.x = prevX;
+            }
+
+            // Applica Y e controlla
+            m_player.y += moveY;
+            m_player.y = SDL_clamp(m_player.y, 0.0f, (float)(600 - m_assets.getTexture("player")->getHeight()));
+            playerAABB = { m_player.x, m_player.y, (float)m_assets.getTexture("player")->getWidth(), (float)m_assets.getTexture("player")->getHeight() };
+            
+            if (Tweny2::checkCollision(playerAABB, m_wall)) {
+                m_player.y = prevY;
             }
         }
         
