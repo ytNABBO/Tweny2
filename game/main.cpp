@@ -75,7 +75,6 @@ class MyGame : public Tweny2::Game {
                 m_walkAnim.setPaused(false);
             } else {
                 m_walkAnim.setPaused(true);
-                m_walkAnim.reset();
             }
 
             m_walkAnim.update(deltaTime);
