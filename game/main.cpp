@@ -38,18 +38,22 @@ class MyGame : public Tweny2::Game {
             float moveX = 0.0f;
             float moveY = 0.0f;
 
-            // Movimento orizzontale — l'ultimo tasto premuto ha priorità
-            if (m_input.isKeyDown(SDL_SCANCODE_D)) {
-                moveX += m_player.speed * deltaTime;
-            } else if (m_input.isKeyDown(SDL_SCANCODE_A)) {
+            // Movimento orizzontale — last-input-wins
+            SDL_Scancode hKey = m_input.lastPressed(SDL_SCANCODE_A, SDL_SCANCODE_D);
+            if (hKey == SDL_SCANCODE_A) {
                 moveX -= m_player.speed * deltaTime;
             }
+            if (hKey == SDL_SCANCODE_D) {
+                moveX += m_player.speed * deltaTime;
+            }
 
-            // Movimento verticale — l'ultimo tasto premuto ha priorità
-            if (m_input.isKeyDown(SDL_SCANCODE_S)) {
-                moveY += m_player.speed * deltaTime;
-            } else if (m_input.isKeyDown(SDL_SCANCODE_W)) {
+            // Movimento verticale — last-input-wins
+            SDL_Scancode vKey = m_input.lastPressed(SDL_SCANCODE_W, SDL_SCANCODE_S);
+            if (vKey == SDL_SCANCODE_W) {
                 moveY -= m_player.speed * deltaTime;
+            }
+            if (vKey == SDL_SCANCODE_S) {
+                moveY += m_player.speed * deltaTime;
             }
 
             // Applica X e controlla
