@@ -1,11 +1,11 @@
 #pragma once // Evita che questo header venga incluso più volte nello stesso file
 
 #include <SDL2/SDL.h>
-#include "Window.h"
-#include "Renderer.h"
-#include "Input.h"
-#include "Texture.h"
-#include "AssetManager.h"
+#include "../core/Window.h"
+#include "../graphics/Renderer.h"
+#include "../input/Input.h"
+#include "../assets/AssetManager.h"
+#include "../graphics/Texture.h"
 
 // Evita conflitti di nomi con altre librerie
 namespace Tweny2 {

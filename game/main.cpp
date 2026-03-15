@@ -1,8 +1,9 @@
 #include <iostream>
-#include "../engine/Game.h"
-#include "../engine/Animation.h"
-#include "../engine/Tilemap.h"
-#include "../engine/Camera.h"
+#include "../engine/core/Game.h"
+#include "../engine/graphics/Animation.h"
+#include "../engine/graphics/Tilemap.h"
+#include "../engine/graphics/Camera.h"
+#include "../engine/physics/Collision.h"
 
 // -------------------------------------------------------
 // MyGame — il gioco specifico costruito sopra Tweny2

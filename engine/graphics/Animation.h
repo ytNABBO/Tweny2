@@ -1,4 +1,5 @@
 #pragma once // Evita che questo header venga incluso più volte nello stesso file
+
 #include <SDL2/SDL.h>
 #include "Texture.h"
 

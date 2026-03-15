@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <unordered_map>
-#include "Texture.h"
+#include "../graphics/Texture.h"
 
 // Evita conflitti di nomi con altre librerie
 namespace Tweny2 {

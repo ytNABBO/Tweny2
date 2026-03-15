@@ -23,16 +23,16 @@ find_package(SDL2_image REQUIRED)
 # Quando si aggiungono altri file .cpp all'engine, bisogna collegarli qui, uno per riga
 add_executable(Tweny2
     game/main.cpp
-    engine/Window.cpp
-    engine/Renderer.cpp
-    engine/Input.cpp
-    engine/Game.cpp
-    engine/Texture.cpp
-    engine/AssetManager.cpp
-    engine/Collision.cpp
-    engine/Animation.cpp
-    engine/Tilemap.cpp
-    engine/Camera.cpp
+    engine/core/Window.cpp
+    engine/core/Game.cpp
+    engine/graphics/Renderer.cpp
+    engine/graphics/Texture.cpp
+    engine/graphics/Animation.cpp
+    engine/graphics/Tilemap.cpp
+    engine/graphics/Camera.cpp
+    engine/input/Input.cpp
+    engine/physics/Collision.cpp
+    engine/assets/AssetManager.cpp
 )
 
 # Dice al compilatore dove trovare i file header di SDL2
