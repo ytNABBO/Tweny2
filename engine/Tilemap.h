@@ -14,7 +14,7 @@ namespace Tweny2 {
             // tilesetCols — numero di colonne nel tileset
             bool load(const std::string& mapPath, Texture* tileset, int tileSize, int tilesetCols);
             
-            void draw(SDL_Renderer* renderer); // Disegna tutta la mappa a schermo
+            void draw(SDL_Renderer* renderer, float offsetX = 0.0f, float offsetY = 0.0f); // Disegna tutta la mappa a schermo
             
             bool isSolid(int tileID) const; // Ritorna true se la tile in quella posizione è solida (blocca il movimento)
             
@@ -31,7 +31,7 @@ namespace Tweny2 {
             int m_tilesetCols = 1; // Numero di colonne nel tileset
             int m_rows = 0; // Numero di righe della mappa
             int m_cols = 0; // Numero di colonne della mappa
-            
+
             // ID tile considerati solidi — il player non può attraversarli
             // 0 = tile vuota (trasparente), gli altri dipendono dal tileset
             std::vector<int> m_solidTiles;

@@ -49,18 +49,17 @@ namespace Tweny2 {
         return true;
     }
 
-    void Tilemap::draw(SDL_Renderer* renderer) {
-        if (!m_tileset) {
-            return;
-        }
-
+    void Tilemap::draw(SDL_Renderer* renderer, float offsetX, float offsetY) {
         for (int row = 0; row < m_rows; row++) {
             for (int col = 0; col < m_cols; col++) {
                 int tileID = m_map[row][col];
-                if (tileID == 0) { continue; } // Tile vuota — non disegnare nulla
+                
+                // Tile vuota — non disegnare nulla
+                if (tileID == 0) {
+                    continue;
+                }
 
                 // Calcola la posizione della tile nel tileset
-                // Il tileset è una griglia — ogni tile ha una riga e una colonna
                 int tilesetRow = (tileID - 1) / m_tilesetCols; // -1 perché gli ID partono da 1
                 int tilesetCol = (tileID - 1) % m_tilesetCols;
 
@@ -72,15 +71,15 @@ namespace Tweny2 {
                     m_tileSize
                 };
 
-                // dstRect — posizione sullo schermo
+                // dstRect — posizione sullo schermo con offset della camera
                 SDL_FRect dstRect = {
-                    (float)(col * m_tileSize),
-                    (float)(row * m_tileSize),
+                    (float)(col * m_tileSize) - offsetX,
+                    (float)(row * m_tileSize) - offsetY,
                     (float)m_tileSize,
                     (float)m_tileSize
                 };
 
-                SDL_RenderCopyF(renderer, m_tileset->getSDLTexture(), &srcRect, &dstRect); // Disegna la tile a schermo
+                SDL_RenderCopyF(renderer, m_tileset->getSDLTexture(), &srcRect, &dstRect);
             }
         }
     }

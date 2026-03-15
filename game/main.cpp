@@ -2,6 +2,8 @@
 #include "../engine/Game.h"
 #include "../engine/Animation.h"
 #include "../engine/Tilemap.h"
+#include "../engine/Camera.h"
+
 // -------------------------------------------------------
 // MyGame — il gioco specifico costruito sopra Tweny2
 // -------------------------------------------------------
@@ -33,6 +35,8 @@ class MyGame : public Tweny2::Game {
             if (!m_tilemap.load("assets/map.txt", m_assets.getTexture("tileset"), 32, 3)) {
                 return false;
             }
+            
+            m_camera.setup(800, 600, m_tilemap.getWidthPixels(), m_tilemap.getHeightPixels(), 5.0f); // Configura la camera
 
             return true;
         }
@@ -82,17 +86,20 @@ class MyGame : public Tweny2::Game {
             }
 
             m_walkAnim.update(deltaTime);
+            
+            m_camera.update(m_player.x + 32.0f, m_player.y + 48.0f, deltaTime); // Aggiorna la camera — insegue il centro del player
         }
 
         void onRender() override {
-            m_tilemap.draw(m_renderer.get()); // Disegna la mappa
-            m_walkAnim.draw(m_renderer.get(), m_player.x, m_player.y); // Disegna il player
+            m_tilemap.draw(m_renderer.get(), m_camera.getOffsetX(), m_camera.getOffsetY());
+            m_walkAnim.draw(m_renderer.get(), m_player.x - m_camera.getOffsetX(), m_player.y - m_camera.getOffsetY());
         }
         
     private:
         Player m_player;
         Tweny2::Animation m_walkAnim; // Animazione di camminata
         Tweny2::Tilemap m_tilemap; // Mappa di gioco
+        Tweny2::Camera m_camera; // Camera del gioco
 };
 
 // -------------------------------------------------------
