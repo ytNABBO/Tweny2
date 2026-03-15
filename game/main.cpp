@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../engine/Game.h"
-#include "../engine/Collision.h"
 #include "../engine/Animation.h"
+#include "../engine/Tilemap.h"
 // -------------------------------------------------------
 // MyGame — il gioco specifico costruito sopra Tweny2
 // -------------------------------------------------------
@@ -10,9 +10,9 @@ struct Player {
     float y = 300.0f;
     float speed = 200.0f;
 };
+
 class MyGame : public Tweny2::Game {
     public:
-        // Chiamato una volta all'avvio — carica le risorse
         bool init(const char* title, int width, int height) {
             if (!Tweny2::Game::init(title, width, height)) {
                 return false;
@@ -25,11 +25,17 @@ class MyGame : public Tweny2::Game {
 
             // Configura l'animazione — 4 frame, 0.15s per frame
             m_walkAnim.setup(m_assets.getTexture("player_walk"), 4, 0.15f);
+            // Carica il tileset e la mappa
+            if (!m_assets.loadTexture(m_renderer.get(), "tileset", "assets/tileset.png")) {
+                return false;
+            }
+            
+            if (!m_tilemap.load("assets/map.txt", m_assets.getTexture("tileset"), 32, 3)) {
+                return false;
+            }
 
             return true;
         }
-
-        // Sovrascrive onUpdate — logica del gioco
         void onUpdate(float deltaTime) override {
             float prevX = m_player.x;
             float prevY = m_player.y;
@@ -54,19 +60,17 @@ class MyGame : public Tweny2::Game {
                 moveY += m_player.speed * deltaTime;
             }
 
-            // Applica X e controlla collisione
+            // Applica X e controlla collisione con tilemap
             m_player.x += moveX;
-            m_player.x = SDL_clamp(m_player.x, 0.0f, 736.0f);
-            Tweny2::AABB playerAABB = { m_player.x, m_player.y, 64.0f, 96.0f };
-            if (Tweny2::checkCollision(playerAABB, m_wall)) {
+            m_player.x = SDL_clamp(m_player.x, 0.0f, (float)(m_tilemap.getWidthPixels() - 64));
+            if (m_tilemap.collides(m_player.x, prevY, 64.0f, 96.0f)) {
                 m_player.x = prevX;
             }
 
-            // Applica Y e controlla collisione
+            // Applica Y e controlla collisione con tilemap
             m_player.y += moveY;
-            m_player.y = SDL_clamp(m_player.y, 0.0f, 504.0f);
-            playerAABB = { m_player.x, m_player.y, 64.0f, 96.0f };
-            if (Tweny2::checkCollision(playerAABB, m_wall)) {
+            m_player.y = SDL_clamp(m_player.y, 0.0f, (float)(m_tilemap.getHeightPixels() - 96));
+            if (m_tilemap.collides(m_player.x, m_player.y, 64.0f, 96.0f)) {
                 m_player.y = prevY;
             }
 
@@ -79,16 +83,16 @@ class MyGame : public Tweny2::Game {
 
             m_walkAnim.update(deltaTime);
         }
-        // Sovrascrive onRender — disegno del gioco
-        void onRender() override {
-            m_walkAnim.draw(m_renderer.get(), m_player.x, m_player.y); // Disegna il frame corrente dell'animazione
-            Tweny2::drawAABB(m_renderer.get(), m_wall); // Disegna il muro per debug
-        }
 
+        void onRender() override {
+            m_tilemap.draw(m_renderer.get()); // Disegna la mappa
+            m_walkAnim.draw(m_renderer.get(), m_player.x, m_player.y); // Disegna il player
+        }
+        
     private:
         Player m_player;
         Tweny2::Animation m_walkAnim; // Animazione di camminata
-        Tweny2::AABB m_wall = { 350.0f, 200.0f, 80.0f, 80.0f };
+        Tweny2::Tilemap m_tilemap; // Mappa di gioco
 };
 
 // -------------------------------------------------------
