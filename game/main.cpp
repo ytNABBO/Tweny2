@@ -1,4 +1,6 @@
+#include <iostream>
 #include "../engine/Game.h"
+#include "../engine/Collision.h"
 
 // -------------------------------------------------------
 // MyGame — il gioco specifico costruito sopra Tweny2
@@ -48,16 +50,34 @@ class MyGame : public Tweny2::Game {
             // Impedisce al player di uscire dalla finestra
             m_player.x = SDL_clamp(m_player.x, 0.0f, (float)(800 - m_assets.getTexture("player")->getWidth())); // 800 è la larghezza della finestra, getWidth() è la larghezza dello sprite del player
             m_player.y = SDL_clamp(m_player.y, 0.0f, (float)(600 - m_assets.getTexture("player")->getHeight())); // 600 è l'altezza della finestra, getHeight() è l'altezza dello sprite del player
+            
+            // Hitbox del player
+            Tweny2::AABB playerAABB = {
+                m_player.x, m_player.y,
+                (float)m_assets.getTexture("player")->getWidth(),
+                (float)m_assets.getTexture("player")->getHeight()
+            };
+
+            // Controlla la collisione con il muro
+            if (Tweny2::checkCollision(playerAABB, m_wall)) {
+                std::cout << "Collisione con il muro!\n";
+            }
         }
         
         // Sovrascrive onRender — disegno del gioco
         void onRender() override {
-            // Disegna lo sprite del player nella posizione x,y
-            m_assets.getTexture("player")->draw(m_renderer.get(), m_player.x, m_player.y);
+            m_assets.getTexture("player")->draw(m_renderer.get(), m_player.x, m_player.y); // Disegna lo sprite del player nella posizione x,y
+            
+            Tweny2::drawAABB(m_renderer.get(), m_wall); // Disegna il muro e le hitbox per debug
         }
 
     private:
         Player m_player; // Stato del player
+
+        // Muro al centro dello schermo
+        Tweny2::AABB m_wall = {
+            350.0f, 200.0f, 80.0f, 80.0f
+        };
 };
 
 // -------------------------------------------------------

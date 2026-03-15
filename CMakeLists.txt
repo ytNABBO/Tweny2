@@ -29,6 +29,7 @@ add_executable(Tweny2
     engine/Game.cpp
     engine/Texture.cpp
     engine/AssetManager.cpp
+    engine/Collision.cpp
 )
 
 # Dice al compilatore dove trovare i file header di SDL2
