@@ -23,6 +23,8 @@ namespace Tweny2 {
             return false;
         }
 
+        m_renderer.setBackgroundColor(0, 0, 0); // Colore di sfondo nero
+        
         m_running = true;
 
         std::cout << "Tweny2 inizializzato.\n";
