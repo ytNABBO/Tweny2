@@ -41,4 +41,4 @@ bool Window::isValid() const {
     return m_window != nullptr;
 }
 
-} // namespace Tweny2
+}
