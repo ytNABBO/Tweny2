@@ -23,6 +23,8 @@ namespace Tweny2 {
             
             bool isValid()  const { return m_texture != nullptr; } // Ritorna true se la texture è stata caricata correttamente
 
+            SDL_Texture* getSDLTexture() const { return m_texture; } // Ritorna il puntatore alla texture SDL (o nullptr se non caricata)
+
         private:
             SDL_Texture* m_texture = nullptr; // Puntatore alla texture SDL (nullptr = non caricata)
             int m_width  = 0; // Larghezza in pixel
