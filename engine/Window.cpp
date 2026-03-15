@@ -6,11 +6,11 @@ namespace Tweny2 {
     bool Window::create(const std::string& title, int width, int height) {
         m_window = SDL_CreateWindow(
             title.c_str(), // SDL vuole un const char*, .c_str() converte da stringa a const char*
-            SDL_WINDOWPOS_CENTERED, // Centra orizzontalmente
-            SDL_WINDOWPOS_CENTERED, // Centra verticalmente
+            SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED,
             width,
             height,
-            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE // Mostra la finestra subito e permette di ridimensionarla
         );
 
         // Controlla se la creazione è fallita
