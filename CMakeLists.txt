@@ -52,3 +52,10 @@ if(WIN32)
         $<TARGET_FILE_DIR:Tweny2> # Destinazione: cartella di Tweny2.exe
     )
 endif()
+
+# Copia la cartella assets nella cartella build dopo ogni compilazione
+add_custom_command(TARGET Tweny2 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/assets
+    $<TARGET_FILE_DIR:Tweny2>/assets
+)

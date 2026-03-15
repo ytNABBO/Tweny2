@@ -47,8 +47,8 @@ class MyGame : public Tweny2::Game {
             }
 
             // Impedisce al player di uscire dalla finestra
-            m_player.x = SDL_clamp(m_player.x, 0.0f, 736.0f); // 800 - 64 (larghezza sprite)
-            m_player.y = SDL_clamp(m_player.y, 0.0f, 504.0f); // 600 - 96 (altezza sprite)
+            m_player.x = SDL_clamp(m_player.x, 0.0f, (float)(800 - m_playerTexture.getWidth())); // 800 è la larghezza della finestra, getWidth() è la larghezza del player
+            m_player.y = SDL_clamp(m_player.y, 0.0f, (float)(600 - m_playerTexture.getHeight())); // 600 è l'altezza della finestra, getHeight() è l'altezza del player
         }
 
         // Sovrascrive onRender — disegno del gioco
